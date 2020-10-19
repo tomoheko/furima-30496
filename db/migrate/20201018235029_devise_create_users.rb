@@ -11,9 +11,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.string  :fisrt_name_kanji,   null:false
       t.string  :family_name_kana,   null:false
       t.string  :first_name_kana,    null:false
-      t.integer :birth_year,         null:false
-      t.integer :birth_month,        null:false
-      t.integer :birth_day,          null:false
+      t.date    :birth_day,          null:false
 
 
       ## Recoverable
