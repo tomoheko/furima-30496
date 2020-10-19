@@ -1,6 +1,5 @@
 # README
 ## usersテーブル
-
 | Column            | Type       | Options     |
 | ----------------- | ---------- | ----------- |
 | nickname          | string     | null: false |
@@ -12,51 +11,46 @@
 | first_name_kana   | string     | null: false |
 | birthday          | date       | null: false |
 
-
 ### Association
-- has_many :products
+- has_many :items
 - has_many :comments
-- has_one  :credit_card
-- has_one  :sending_address
+- has_many :purchases
 
 
 
 ## itemsテーブル
-
-| Column        | Type       | Options                        |
-| ------------- | ---------- | ------------------------------ |
-| name          | string     | null: false                    |
-| explanation   | text       | null: false                    |
-| category_id   | integer    | null: false                    |
-| condition     | string     | null: false                    |
-| area          | string     | null: false                    |
-| shipment_term | string     | null: false                    |
-| price         | integer    | null: false                    |
-| shipment_fee  | integer    | null: false                    |
-| user_id       | references | null: false, foreign_key: true |
+| Column           | Type       | Options                        |
+| ---------------- | ---------- | ------------------------------ |
+| name             | string     | null: false                    |
+| explanation      | text       | null: false                    |
+| category_id      | integer    | null: false                    |
+| condition_id     | integer    | null: false                    |
+| area_id          | integer    | null: false                    |
+| shipment_term_id | integer    | null: false                    |
+| price            | integer    | null: false                    |
+| shipment_fee     | integer    | null: false                    |
+| user             | references | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :user
-- has_many :comments
-
+- has_many   :comments
+- belongs_to :purchase
 
 
 ## commentsテーブル
-
 | Column  | Type       | Options                        |
 | ------- | ---------- | ------------------------------ |
 | text    | text       | null: false                    |
-| user_id | references | null: false, foreign_key: true |
-| item_id | references | null: false, foreign_key: true |
+| user    | references | null: false, foreign_key: true |
+| item    | references | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :user
-- belongs_to :product
+- belongs_to :item
 
 
 
 ## sending_addressテーブル
-
 | Column        | Type       | Options                        |
 | ------------- | ---------- | ------------------------------ |
 | post_cord     | string     | null: false                    |
@@ -68,17 +62,17 @@
 | user_id       | references | null: false, foreign_key: true |
 
 ### Association
-- belongs_to :user
+- belongs_to :purchase
 
 
 
 ## purchasesテーブル
-
-| Column        | Type       | Options                        |
-| ------------- | ---------- | ------------------------------ |
-| user_id       | date       | null: false                    |
-| item_id       | integer    | null: false                    |
+| Column     | Type       | Options                        |
+| ---------- | ---------- | ------------------------------ |
+| user       | date       | null: false, foreign_key: true |
+| item       | integer    | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :user
 - belongs_to :item
+- has one    :sending_address
