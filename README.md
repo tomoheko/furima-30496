@@ -28,13 +28,13 @@
 | area_id          | integer    | null: false                    |
 | shipment_term_id | integer    | null: false                    |
 | price            | integer    | null: false                    |
-| shipment_fee     | integer    | null: false                    |
+| shipment_fee_id  | integer    | null: false                    |
 | user             | references | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :user
 - has_many   :comments
-- belongs_to :purchase
+- has_one    :purchase
 
 
 ## commentsテーブル
@@ -59,7 +59,7 @@
 | home_number   | string     | null: false                    |
 | building      | string     |                                |
 | phone_number  | string     | null: false                    |
-| user_id       | references | null: false, foreign_key: true |
+| user          | references | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :purchase
@@ -69,8 +69,8 @@
 ## purchasesテーブル
 | Column     | Type       | Options                        |
 | ---------- | ---------- | ------------------------------ |
-| user       | date       | null: false, foreign_key: true |
-| item       | integer    | null: false, foreign_key: true |
+| user       | references | null: false, foreign_key: true |
+| item       | references | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :user
