@@ -23,6 +23,11 @@ RSpec.describe 'ユーザー新規登録', type: :system do
         @user.valid?
         expect(@user.errors.full_messages).to include("Nickname can't be blank")
       end
+      it "emailに@を含んでいない場合は登録出来ない" do
+        @user.email = "abcde"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Email is invalid")
+      end
       it "emailが空では登録できない" do
         @user.email = ""
         @user.valid?
