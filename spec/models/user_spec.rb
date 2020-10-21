@@ -10,11 +10,6 @@ RSpec.describe 'ユーザー新規登録', type: :system do
       it "nicknameとemail、password,password_confirmation,family_name_kanji,first_name_kanji,family_name_kana,family_name_kana,birthdayが存在すれば登録できる" do
         expect(@user).to be_valid  
       end
-      it "passwordが6文字以上であれば登録できる" do
-        @user.password = "abc000"
-        @user.password_confirmation = "abc000"
-        expect(@user).to be_valid
-      end
     end
 
     context '新規登録がうまくいかないとき' do
@@ -46,8 +41,8 @@ RSpec.describe 'ユーザー新規登録', type: :system do
         expect(@user.errors.full_messages).to include("Password can't be blank")
       end
       it "passwordが5文字以下であれば登録できない" do
-        @user.password = "00000"
-        @user.password_confirmation = "00000"
+        @user.password = "aaa00"
+        @user.password_confirmation = "aaa00"
         @user.valid?
         expect(@user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
       end
@@ -82,9 +77,15 @@ RSpec.describe 'ユーザー新規登録', type: :system do
         @user.valid?
         expect(@user.errors.full_messages).to include("First name kana can't be blank")
       end
-      # 半角英数混合
-      it 'password:半角英数混合(半角英語のみ)' do
+      # 半角英数混合(半角英語のみ)
+      it 'passwordが半角英数混合でなければ登録できない' do
         @user.password = 'aaaaaa'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password Passwordis invalid. Input half-width characters.")
+      end
+      # 半角英数混合(半角数字のみ)
+      it 'passwordが半角英数混合でなければ登録できない' do
+        @user.password = '111111'
         @user.valid?
         expect(@user.errors.full_messages).to include("Password Passwordis invalid. Input half-width characters.")
       end
@@ -101,15 +102,26 @@ RSpec.describe 'ユーザー新規登録', type: :system do
         expect(@user.errors.full_messages).to include("First name kanji 全角文字を使用してください")
       end
 
-      it 'family_name_kanaが全角カタカナでなければ登録できないこと' do
-        @user.family_name_kana = "あいうえお" # 意図的にひらがな入力を行いエラーを発生させる
+      it 'family_name_kanaが全角カタカナでなければ登録できないこと(ひらがな)' do
+        @user.family_name_kana = "やまだ" # 意図的にひらがな入力を行いエラーを発生させる
         @user.valid?
-        expect(@user.errors.full_messages).to include("Family name kana Last name kana Full-width katakana characters")
+        expect(@user.errors.full_messages).to include("Family name kana Full-width katakana characters")
       end
-      it 'first_name_kanaが全角カタカナでなければ登録できないこと' do
-        @user.first_name_kana = "あいうえお" # 意図的にひらがな入力を行いエラーを発生させる
+      it 'family_name_kanaが全角カタカナでなければ登録できないこと(漢字)' do
+        @user.family_name_kana = "山田" # 意図的に漢字入力を行いエラーを発生させる
         @user.valid?
-        expect(@user.errors.full_messages).to include("First name kana Family name kana Full-width katakana characters")
+        expect(@user.errors.full_messages).to include("Family name kana Full-width katakana characters")
+      end
+
+      it 'first_name_kanaが全角カタカナでなければ登録できないこと(ひらがな)' do
+        @user.first_name_kana = "りくたろう" # 意図的にひらがな入力を行いエラーを発生させる
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name kana Full-width katakana characters")
+      end
+      it 'first_name_kanaが全角カタカナでなければ登録できないこと(漢字)' do
+        @user.first_name_kana = "陸太郎" # 意図的に漢字入力を行いエラーを発生させる
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name kana Full-width katakana characters")
       end
       
       it "birthdayが空では登録できないこと" do
