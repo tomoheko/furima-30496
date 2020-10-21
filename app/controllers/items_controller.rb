@@ -14,5 +14,9 @@ class ItemsController < ApplicationController
     unless user_signed_in?
       redirect_to action: :index
     end
-  end  
+  end
+
+  def item_image_params
+    params.require(:item).permit(:name, :image).merge(item_id: current_user.id)
+  end
 end
