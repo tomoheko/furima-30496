@@ -7,25 +7,27 @@ class Item < ApplicationRecord
   belongs_to_active_hash :shipment_term
 
   #空の投稿を保存できないようにする
-with_options presence: true do
-  validates :name
-  validates :explanation
-  validates :catrgory
-  validates :condition
-  validates :prefecture
-  validates :shipment_term
-  validates :price
-  validates :shipment_fee
-end
+  with_options presence: true do
+    validates :name
+    validates :explanation
+    # validates :catrgory
+    # validates :condition
+    # validates :prefecture
+    # validates :shipment_term
+    # validates :shipment_fee
+  end
 
-##ジャンルの選択が「--」の時は保存できないようにする
-with_options numericality: { other_than: 1 }  do
-  validates :catrgory_id
-  validates :condition_id
-  validates :prefecture_id
-  validates :shipment_term_id
-  validates :shipment_fee_id
-end
+  ##ジャンルの選択が「--」の時は保存できないようにする
+  with_options numericality: { other_than: 1 }  do
+    validates :category_id
+    validates :condition_id
+    validates :prefecture_id
+    validates :shipment_term_id
+    validates :shipment_fee_id
+  end
+
+  # priceの半角数字入力と数値の範囲指定
+  validates :price, presence: true, format: { with: /\A[-]?[0-9]+(\.[0-9]+)?\z/ , message: 'You must use half-width characters.' } ,numericality: {only_integer: true, greater_than_or_equal_to: 300, less_than_or_equal_to: 9999999}
 
   #アソシエーション
   has_one_attached :image
