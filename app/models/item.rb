@@ -10,11 +10,6 @@ class Item < ApplicationRecord
   with_options presence: true do
     validates :name
     validates :explanation
-    # validates :catrgory
-    # validates :condition
-    # validates :prefecture
-    # validates :shipment_term
-    # validates :shipment_fee
   end
 
   ##ジャンルの選択が「--」の時は保存できないようにする
