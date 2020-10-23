@@ -2,7 +2,7 @@ class ItemsController < ApplicationController
   # before_action :move_to_index, except: [:index, :show]
 
   def index
-    @items = Item.order("created_at DESC")
+    # @items = Item.order("created_at DESC")
   end
 
   def new
@@ -25,19 +25,19 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
   end
 
-  def edit
-  end
+  # def edit
+  # end
 
-  def destroy
-  end
+  # def destroy
+  # end
 
   private
   
-  def move_to_index
-    unless user_signed_in?
-      redirect_to action: :index
-    end
-  end
+  # def move_to_index
+  #   unless user_signed_in?
+  #     redirect_to action: :index
+  #   end
+  # end
 
   def item_image_params
     params.require(:item).permit(:name, :image).merge(user_id: current_user.id)
