@@ -1,4 +1,5 @@
 class ItemsController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create, :update, :edit, :destroy]
   # before_action :move_to_index, except: [:index, :show]
 
   def index
@@ -7,9 +8,6 @@ class ItemsController < ApplicationController
 
   def new
     @item = Item.new
-    unless user_signed_in?
-      redirect_to user_session_path
-    end
   end
 
   def create
