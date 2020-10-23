@@ -23,4 +23,6 @@ class User < ApplicationRecord
     validates :first_name_kanji
     validates :family_name_kanji
   end
+
+  has_many :items
 end
