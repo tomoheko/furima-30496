@@ -23,7 +23,24 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
   end
 
-  
+  def edit
+    @item = Item.find(params[:id])
+    unless current_user.id == @item.user_id
+      redirect_to root_path
+    end
+  end
+
+  def update
+    item = Item.find(params[:id])
+    if item.update(item_new_params)
+      redirect_to item_path
+    else
+      @item = Item.find(params[:id])
+      render :edit
+    end
+  end
+
+
   private
 
   def item_image_params
