@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :update, :edit, :destroy]
+  before_action :item_id, only: [:edit, :show, :update]
 
   def new
     @item = Item.new
@@ -20,10 +21,23 @@ class ItemsController < ApplicationController
 
 
   def show
-    @item = Item.find(params[:id])
   end
 
-  
+  def edit
+    unless current_user.id == @item.user_id
+      redirect_to root_path
+    end
+  end
+
+  def update
+    if @item.update(item_new_params)
+      redirect_to item_path
+    else
+      render :edit
+    end
+  end
+
+
   private
 
   def item_image_params
@@ -32,5 +46,9 @@ class ItemsController < ApplicationController
 
   def item_new_params
     params.require(:item).permit(:name, :image, :explanation, :category_id, :condition_id, :prefecture_id, :shipment_term_id, :price, :shipment_fee_id).merge(user_id: current_user.id)
+  end
+
+  def item_id
+    @item = Item.find(params[:id])
   end
 end
