@@ -1,25 +1,34 @@
 class OrdersController < ApplicationController
 
   def index
-    @item = Item.find(params[:id])
-    @order = Order.new
+    @item = Item.find(params[:item_id])
+    @user_order = UserOrder.new
   end
 
   def create
-    @item = Item.find(params[:id])
-    @order = Order.new
+    @user_order = UserOrder.new(order_params)
     binding.pry
-    if @order.valid?
-      @order.save
-      return redirect_to root_path
+    if @user_order.valid?
+      @user_order.save
+      redirect_to root_path
     else
-      render order_path
+      render action: :index
     end
   end
 
   private
-
+  # 全てのストロングパラメーターを1つに統合
   def order_params
-    params.require(:order).merge(user_id: current_user.id, item_id: @item.id)
+    params.require(:user_order).permit(:post_code, :prefecture_id, :city, :building, :home_number, :phone_number)
+    .merge(item_id: params[:item_id], user_id: current_user.id, token: params[:token])
   end
-# end
+
+  def pay_item
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]  # PAY.JPテスト秘密鍵
+    Payjp::Charge.create(
+      amount: order_params[:price],  # 商品の値段
+      card: order_params[:token],    # カードトークン
+      currency: 'jpy'                 # 通貨の種類（日本円）
+    )
+  end
+end
