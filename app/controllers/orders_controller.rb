@@ -1,18 +1,22 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @item = Item.find(params[:item_id])
     @user_order = UserOrder.new
+    if @item.user == current_user
+      redirect_to root_path
+    end
   end
 
   def create
+    @item = Item.find(params[:item_id])
     @user_order = UserOrder.new(order_params)
-    binding.pry
     if @user_order.valid?
       @user_order.save
       redirect_to root_path
     else
-      render action: :index
+      render :index
     end
   end
 

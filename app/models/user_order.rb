@@ -8,7 +8,7 @@ class UserOrder
     validates :prefecture_id, numericality: { other_than: 1, message: "can't be blank" }
     validates :city
     validates :home_number
-    validates :phone_number, format: {with: /\A[0-9]+\z/, message: "is invalid. Input half-width characters."}
+    validates :phone_number, length: { maximum: 11 }, format: {with: /\A\d{11}\z/, message: "is invalid. Input half-width characters."}
   end
 
 
