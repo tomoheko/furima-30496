@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :user_order do
     token        {"tok_abcdefghijk00000000000000000"}
     post_code    { '123-4567' }
-    prefecture_id { '28' }
+    prefecture_id { 28 }
     city         { 'Hirakata' }
     home_number  { '1-2-3' }
     building     { '森ビル' }
