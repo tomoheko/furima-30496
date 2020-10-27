@@ -1,16 +1,19 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_item, only: [:index, :create]
 
   def index
-    @item = Item.find(params[:item_id])
     @user_order = UserOrder.new
-    if @item.user == current_user
+    if @item.order != nil
       redirect_to root_path
+    else
+      if @item.user == current_user
+        redirect_to root_path
+      end
     end
   end
 
   def create
-    @item = Item.find(params[:item_id])
     @user_order = UserOrder.new(order_params)
     if @user_order.valid?
       @user_order.save
@@ -20,7 +23,12 @@ class OrdersController < ApplicationController
     end
   end
 
+
   private
+  def set_item
+    @item = Item.find(params[:item_id])
+  end
+
   # 全てのストロングパラメーターを1つに統合
   def order_params
     params.require(:user_order).permit(:post_code, :prefecture_id, :city, :building, :home_number, :phone_number)
