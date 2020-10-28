@@ -34,7 +34,7 @@
 ### Association
 - belongs_to :user
 - has_many   :comments
-- has_one    :purchase
+- has_one    :order
 
 
 ## commentsテーブル
@@ -50,23 +50,23 @@
 
 
 
-## sending_addressテーブル
+## addressテーブル
 | Column        | Type       | Options                        |
 | ------------- | ---------- | ------------------------------ |
-| post_cord     | string     | null: false                    |
+| post_code     | string     | null: false                    |
 | prefecture_id | integer    | null: false                    |
 | city          | string     | null: false                    |
 | home_number   | string     | null: false                    |
 | building      | string     |                                |
 | phone_number  | string     | null: false                    |
-| purchase      | references | null: false, foreign_key: true |
+| order         | references | null: false, foreign_key: true |
 
 ### Association
-- belongs_to :purchase
+- belongs_to :order
 
 
 
-## purchasesテーブル
+## ordersテーブル
 | Column     | Type       | Options                        |
 | ---------- | ---------- | ------------------------------ |
 | user       | references | null: false, foreign_key: true |
@@ -75,4 +75,4 @@
 ### Association
 - belongs_to :user
 - belongs_to :item
-- has one    :sending_address
+- has one    :address
